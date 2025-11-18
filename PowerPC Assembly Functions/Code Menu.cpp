@@ -937,15 +937,21 @@ void CodeMenu()
 	
 	//player pages
 	vector<Line*> P1Lines;
-	P1Lines.push_back(new Toggle("Infinite Shield", false, INFINITE_SHIELDS_P1_INDEX));
+	if (xml::CONFIG_DISPLAY_TAG_HEX_ENABLED)
+	{
+		P1Lines.push_back(new Print("Tag Hex: %s", { &P1_TAG_STRING_INDEX }));
+	}
 	Selection* P1CharSelect = new Selection("P1 Character Select", CHARACTER_LIST, CHARACTER_ID_LIST, 0, CHARACTER_SELECT_P1_INDEX);
 	if (!CHARACTER_LIST.empty())
 	{
 		P1Lines.push_back(P1CharSelect);
 	}
+	P1Lines.push_back(new Comment(""));
+	P1Lines.push_back(new Toggle("Infinite Shield", false, INFINITE_SHIELDS_P1_INDEX));
 	P1Lines.push_back(new Floating("Select Percent", 0, 999, 0, 1, PERCENT_SELECT_VALUE_P1_INDEX, "%.0f%%"));
 	P1Lines.push_back(new Toggle("Press DPad to select percent", false, PERCENT_SELECT_ACTIVATOR_P1_INDEX));
 	P1Lines.push_back(new Toggle("Disable DPad", false, DISABLE_DPAD_P1_INDEX));
+	P1Lines.push_back(new Comment(""));
 	Selection* P1InputBuffer = new Selection("Input Buffer", { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, 0, BUFFER_P1_INDEX);
 	P1InputBuffer->behaviorFlags[Line::lbf_HIDDEN].value = !PROJECT_PLUS_EX_BUILD;
 	Selection* P1ALC = new Selection("Automatic L-Cancelling", { "OFF", "ON", "Modified" }, 0, ALC_P1_INDEX);
@@ -955,13 +961,8 @@ void CodeMenu()
 	P1Lines.push_back(new Floating("ALC Modifier", 0.099, 3, 0.5, 0.05, EXTERNAL_INDEX, "%.2fX"));
 	P1Lines.back()->behaviorFlags[Line::lbf_HIDDEN].value = !PROJECT_PLUS_EX_BUILD;
 	P1Lines.push_back(new Toggle("Red Flash on L-Cancel Failure", false, ALC_P1_FLASH_RED_INDEX));
-	P1Lines.back()->behaviorFlags[Line::lbf_HIDDEN].value = !PROJECT_PLUS_EX_BUILD;
-	if (xml::CONFIG_DISPLAY_TAG_HEX_ENABLED)
-	{
-		P1Lines.push_back(new Comment(""));
-		P1Lines.push_back(new Print("Tag Hex: %s", { &P1_TAG_STRING_INDEX }));
-		P1Lines.push_back(new Comment("For Use With Tag-Based Costumes"));
-	}
+	P1Lines.back()->behaviorFlags[Line::lbf_HIDDEN].value = !PROJECT_PLUS_EX_BUILD;	
+	P1Lines.push_back(new Comment(""));
 	Page P1("Player 1 Codes", P1Lines, lava::shortNameType("_PLAYER1"));
 
 	vector<Line*> P2Lines;
